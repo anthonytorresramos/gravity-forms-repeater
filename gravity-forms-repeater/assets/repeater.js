@@ -18,13 +18,13 @@ jQuery(document).ready(function ($) {
         calculateTotals(); // Recalculate totals after removing a row
     });
 
-    // Show other field if "Other" is selected
+    // Show the other field if "Other" is selected
     $(document).on('change', '.appliance-select', function () {
         var $otherField = $(this).closest('.repeater-row').find('.other-appliance');
-        if ($(this).val() === 'other') {
-            $otherField.show();
+        if ($(this).val().includes('Other|Other')) {
+            $otherField.show(); // Show the field when "Other" is selected
         } else {
-            $otherField.hide().val('');
+            $otherField.hide().val(''); // Hide the field and clear the value when not selected
         }
     });
 
@@ -63,8 +63,11 @@ jQuery(document).ready(function ($) {
         });
 
         // Update the total fields
-        $('.total-kwh-day-summer').text(totalKwhSummer.toFixed(2));
-        $('.total-kwh-day-winter').text(totalKwhWinter.toFixed(2));
-        $('.total-watts').text(totalWatts);
+        $('#total-kwh-day-summer').text(totalKwhSummer.toFixed(2));
+        $('#total-kwh-day-winter').text(totalKwhWinter.toFixed(2));
+        $('#total-watts').text(totalWatts);
     }
+
+    // Initial call to set values on page load
+    calculateTotals();
 });
