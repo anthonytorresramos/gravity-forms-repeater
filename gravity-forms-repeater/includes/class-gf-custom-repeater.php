@@ -53,7 +53,8 @@ if ( class_exists( 'GFForms' ) ) {
 
             // Totals container
             $input .= '<div class="total-container">';
-            $input .= '<p>Total kWh/day: <span class="total-kwh-day">0.00</span></p>';
+            $input .= '<p>Total kWh/day (SUMMER): <span class="total-kwh-day-summer">0.00</span></p>';
+            $input .= '<p>Total kWh/day (WINTER): <span class="total-kwh-day-winter">0.00</span></p>';
             $input .= '<p>Total Watts: <span class="total-watts">0</span></p>';
             $input .= '</div>';
 
@@ -74,8 +75,10 @@ if ( class_exists( 'GFForms' ) ) {
                 <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" placeholder="Other Appliance" style="display:none;" />
                 <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" placeholder="Qty" min="1" />
                 <input type="number" name="input_<?php echo $input_id; ?>[watts][]" placeholder="Watts" min="0" />
-                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage][]" placeholder="Hours Usage" min="0" step="0.1" />
-                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day][]" class="kwh-day" placeholder="kWh/day" readonly />
+                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_summer][]" placeholder="Hours Usage (SUMMER)" min="0" step="0.1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_winter][]" placeholder="Hours Usage (WINTER)" min="0" step="0.1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_summer][]" class="kwh-day-summer" placeholder="kWh/day (SUMMER)" readonly />
+                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" placeholder="kWh/day (WINTER)" readonly />
                 <button type="button" class="remove-repeater-row">−</button>
             </div>
             <?php
@@ -99,12 +102,14 @@ if ( class_exists( 'GFForms' ) ) {
                 $output = [];
                 foreach ($values as $entry) {
                     $output[] = sprintf(
-                        'Appliance: %s, Qty: %s, Watts: %s, Hours Usage: %s, kWh/day: %s',
+                        'Appliance: %s, Qty: %s, Watts: %s, Hours Usage (SUMMER): %s, Hours Usage (WINTER): %s, kWh/day (SUMMER): %s, kWh/day (WINTER): %s',
                         esc_html($entry['appliance'] ?? 'N/A'),
                         esc_html($entry['quantity'] ?? '0'),
                         esc_html($entry['watts'] ?? '0'),
-                        esc_html($entry['hours_usage'] ?? '0'),
-                        esc_html($entry['kwh_day'] ?? '0')
+                        esc_html($entry['hours_usage_summer'] ?? '0'),
+                        esc_html($entry['hours_usage_winter'] ?? '0'),
+                        esc_html($entry['kwh_day_summer'] ?? '0'),
+                        esc_html($entry['kwh_day_winter'] ?? '0')
                     );
                 }
                 return implode('<br>', $output);

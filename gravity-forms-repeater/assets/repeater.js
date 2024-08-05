@@ -28,35 +28,43 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // Calculate kWh/day for each row
-    $(document).on('input', 'input[name$="[quantity][]"], input[name$="[watts][]"], input[name$="[hours_usage][]"]', function () {
+    // Calculate kWh/day (SUMMER) and kWh/day (WINTER) for each row
+    $(document).on('input', 'input[name$="[quantity][]"], input[name$="[watts][]"], input[name$="[hours_usage_summer][]"], input[name$="[hours_usage_winter][]"]', function () {
         var $row = $(this).closest('.repeater-row');
         var qty = parseFloat($row.find('input[name$="[quantity][]"]').val()) || 0;
         var watts = parseFloat($row.find('input[name$="[watts][]"]').val()) || 0;
-        var hours = parseFloat($row.find('input[name$="[hours_usage][]"]').val()) || 0;
+        var hoursSummer = parseFloat($row.find('input[name$="[hours_usage_summer][]"]').val()) || 0;
+        var hoursWinter = parseFloat($row.find('input[name$="[hours_usage_winter][]"]').val()) || 0;
 
-        var kwhDay = (qty * watts * hours) / 1000;
-        $row.find('input[name$="[kwh_day][]"]').val(kwhDay.toFixed(2));
+        var kwhDaySummer = (qty * watts * hoursSummer) / 1000;
+        var kwhDayWinter = (qty * watts * hoursWinter) / 1000;
+
+        $row.find('input[name$="[kwh_day_summer][]"]').val(kwhDaySummer.toFixed(2));
+        $row.find('input[name$="[kwh_day_winter][]"]').val(kwhDayWinter.toFixed(2));
 
         calculateTotals(); // Recalculate totals whenever inputs change
     });
 
-    // Calculate total kWh/day and total watts
+    // Calculate total kWh/day (SUMMER), total kWh/day (WINTER), and total watts
     function calculateTotals() {
-        var totalKwh = 0;
+        var totalKwhSummer = 0;
+        var totalKwhWinter = 0;
         var totalWatts = 0;
 
         // Iterate over each row and sum up kWh/day and watts
         $('.gf-repeater .repeater-row').each(function () {
-            var kwh = parseFloat($(this).find('input[name$="[kwh_day][]"]').val()) || 0;
+            var kwhSummer = parseFloat($(this).find('input[name$="[kwh_day_summer][]"]').val()) || 0;
+            var kwhWinter = parseFloat($(this).find('input[name$="[kwh_day_winter][]"]').val()) || 0;
             var watts = parseFloat($(this).find('input[name$="[watts][]"]').val()) || 0;
 
-            totalKwh += kwh;
+            totalKwhSummer += kwhSummer;
+            totalKwhWinter += kwhWinter;
             totalWatts += watts;
         });
 
         // Update the total fields
-        $('.total-kwh-day').text(totalKwh.toFixed(2));
+        $('.total-kwh-day-summer').text(totalKwhSummer.toFixed(2));
+        $('.total-kwh-day-winter').text(totalKwhWinter.toFixed(2));
         $('.total-watts').text(totalWatts);
     }
 });

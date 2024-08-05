@@ -42,11 +42,13 @@ function handle_custom_repeater_submission($form) {
                 foreach ($field_value['appliance'] as $key => $appliance) {
                     $processed_values[] = [
                         'appliance' => sanitize_text_field($appliance),
-                        'other_appliance' => sanitize_text_field($field_value['other_appliance'][$key]),
-                        'quantity' => floatval($field_value['quantity'][$key]),
-                        'watts' => floatval($field_value['watts'][$key]),
-                        'hours_usage' => floatval($field_value['hours_usage'][$key]),
-                        'kwh_day' => floatval($field_value['kwh_day'][$key]),
+                        'other_appliance' => sanitize_text_field($field_value['other_appliance'][$key] ?? ''),
+                        'quantity' => floatval($field_value['quantity'][$key] ?? 0),
+                        'watts' => floatval($field_value['watts'][$key] ?? 0),
+                        'hours_usage_summer' => floatval($field_value['hours_usage_summer'][$key] ?? 0),
+                        'hours_usage_winter' => floatval($field_value['hours_usage_winter'][$key] ?? 0),
+                        'kwh_day_summer' => floatval($field_value['kwh_day_summer'][$key] ?? 0),
+                        'kwh_day_winter' => floatval($field_value['kwh_day_winter'][$key] ?? 0),
                     ];
                 }
 
