@@ -78,15 +78,16 @@ if (class_exists('GFForms')) {
         
             $input .= '</div>'; // End of gf-repeater
         
-            // Totals container
+            // Totals container with static IDs
             $input .= '<div class="total-container">';
-            $input .= '<p>Total kWh/day (SUMMER): <span id="total-kwh-day-summer" class="total-kwh-day-summer">0.00</span></p>';
-            $input .= '<p>Total kWh/day (WINTER): <span id="total-kwh-day-winter" class="total-kwh-day-winter">0.00</span></p>';
-            $input .= '<p>Total Watts: <span id="total-watts" class="total-watts">0</span></p>';
+            $input .= '<p>Total kWh/day (SUMMER): <span id="g_total_summer" class="total-kwh-day-summer">0.00</span></p>';
+            $input .= '<p>Total kWh/day (WINTER): <span id="g_total_winter" class="total-kwh-day-winter">0.00</span></p>';
+            $input .= '<p>Total Watts: <span id="g_total_watts" class="total-watts">0</span></p>';
             $input .= '</div>';
         
             return $input;
         }
+        
         
         
         

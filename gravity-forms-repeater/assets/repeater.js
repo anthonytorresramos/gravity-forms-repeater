@@ -65,10 +65,21 @@ jQuery(document).ready(function ($) {
             totalWatts += qty * watts;
         });
 
-        // Update the total fields
-        $('#total-kwh-day-summer').text(totalKwhSummer.toFixed(2));
-        $('#total-kwh-day-winter').text(totalKwhWinter.toFixed(2));
-        $('#total-watts').text(totalWatts);
+        // Update the total fields with static IDs
+        $('#g_total_summer').text(totalKwhSummer.toFixed(2));
+        $('#g_total_winter').text(totalKwhWinter.toFixed(2));
+        $('#g_total_watts').text(totalWatts);
+
+        // Update Gravity Forms fields with the calculated totals
+        // Make sure to use the correct naming convention: 'input_' followed by your field ID
+        var totalSummerFieldId = 'input_32'; // Replace with the actual field ID for Total kWh/day (SUMMER)
+        var totalWinterFieldId = 'input_30'; // Replace with the actual field ID for Total kWh/day (WINTER)
+        var totalWattsFieldId = 'input_33';   // Replace with the actual field ID for Total Watts
+
+        // Set the values of the Gravity Forms fields
+        $('input[name="' + totalSummerFieldId + '"]').val(totalKwhSummer.toFixed(2));
+        $('input[name="' + totalWinterFieldId + '"]').val(totalKwhWinter.toFixed(2));
+        $('input[name="' + totalWattsFieldId + '"]').val(totalWatts);
     }
 
     // Initial call to set values on page load
