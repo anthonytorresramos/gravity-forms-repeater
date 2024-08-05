@@ -53,13 +53,16 @@ jQuery(document).ready(function ($) {
 
         // Iterate over each row and sum up kWh/day and watts
         $('.gf-repeater .repeater-row').each(function () {
+            var qty = parseFloat($(this).find('input[name$="[quantity][]"]').val()) || 0;
+            var watts = parseFloat($(this).find('input[name$="[watts][]"]').val()) || 0;
             var kwhSummer = parseFloat($(this).find('input[name$="[kwh_day_summer][]"]').val()) || 0;
             var kwhWinter = parseFloat($(this).find('input[name$="[kwh_day_winter][]"]').val()) || 0;
-            var watts = parseFloat($(this).find('input[name$="[watts][]"]').val()) || 0;
 
             totalKwhSummer += kwhSummer;
             totalKwhWinter += kwhWinter;
-            totalWatts += watts;
+
+            // Multiply quantity by watts and add to total watts
+            totalWatts += qty * watts;
         });
 
         // Update the total fields

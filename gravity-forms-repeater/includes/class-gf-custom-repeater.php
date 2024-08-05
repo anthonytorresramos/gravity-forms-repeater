@@ -65,11 +65,11 @@ if (class_exists('GFForms')) {
                     </div>
                 </div>';
         
-            // Repeater rows container
+            // Repeater rows container with prepopulated data
             $input .= '<div class="repeater-rows">';
         
-            // Default row structure
-            $input .= $this->get_repeater_row_html($input_id);
+            // Add prepopulated rows
+            $input .= $this->get_prepopulated_repeater_rows($input_id);
         
             $input .= '</div>'; // End of repeater-rows
         
@@ -87,6 +87,7 @@ if (class_exists('GFForms')) {
         
             return $input;
         }
+        
         
         
         
@@ -237,6 +238,85 @@ if (class_exists('GFForms')) {
         {
             return 'class="ginput_container ginput_container_text"'; // You can customize this
         }
+
+        private function get_prepopulated_repeater_rows($input_id)
+        {
+            $prepopulated_data = [
+                ["Elec Hot Water (type?)|HEATING", "", 0, 3500, 3, 3],
+                ["Air Conditioning Elec Input|HEATING", "", 1, 2500, 2, 2],
+                ["Bar / Elec Heaters|HEATING", "", 0, 1000, 0, 2],
+                ["Elec Oven|KITCHEN", "", 1, 1500, 0.5, 0.5],
+                ["Elect Cook Top|KITCHEN", "", 0, 1000, 0.5, 0.5],
+                ["Dishwasher|KITCHEN", "", 1, 2000, 1, 1],
+                ["Kettle|KITCHEN", "", 1, 2000, 0.2, 0.2],
+                ["Toaster|KITCHEN", "", 0, 1500, 0.1, 0.1],
+                ["Fridge|KITCHEN", "", 1, 200, 4, 4],
+                ["Pool Pump|PUMPS", "", 0, 500, 5, 2],
+                ["Sewage System Pump etc|PUMPS", "", 0, 400, 12, 12],
+                ["Water Pump|PUMPS", "", 0, 1000, 1, 1],
+                ["Washing Machine (Cold W)|PUMPS", "", 0, 500, 1, 1],
+
+                ["Other|Other", "LED FLOOD LIGHT", 2, 50, 4, 4],
+                ["Other|Other", "LED lights", 0, 20, 4, 4],
+                ["Other|Other", "Ceiling Fans", 2, 30, 2, 0],
+                ["Other|Other", "TV", 1, 50, 2, 2],
+                ["Other|Other", "LED lights", 20, 8, 4, 4],
+
+
+
+    
+            ];
+        
+            ob_start();
+        
+            foreach ($prepopulated_data as $row) {
+                list($appliance, $other_appliance, $qty, $watts, $hours_summer, $hours_winter) = $row;
+                $kwh_day_summer = ($qty * $watts * $hours_summer) / 1000;
+                $kwh_day_winter = ($qty * $watts * $hours_winter) / 1000;
+        ?>
+        
+                <div class="repeater-row">
+                    <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
+                        <optgroup label="HEATING">
+                            <option value="Elec Hot Water (type?)|HEATING" <?php selected($appliance, "Elec Hot Water (type?)|HEATING"); ?>>Elec Hot Water (type?)</option>
+                            <option value="Air Conditioning Elec Input|HEATING" <?php selected($appliance, "Air Conditioning Elec Input|HEATING"); ?>>Air Conditioning Elec Input</option>
+                            <option value="Bar / Elec Heaters|HEATING" <?php selected($appliance, "Bar / Elec Heaters|HEATING"); ?>>Bar / Elec Heaters</option>
+                        </optgroup>
+                        <optgroup label="KITCHEN">
+                            <option value="Elec Oven|KITCHEN" <?php selected($appliance, "Elec Oven|KITCHEN"); ?>>Elec Oven</option>
+                            <option value="Elect Cook Top|KITCHEN" <?php selected($appliance, "Elect Cook Top|KITCHEN"); ?>>Elect Cook Top</option>
+                            <option value="Dishwasher|KITCHEN" <?php selected($appliance, "Dishwasher|KITCHEN"); ?>>Dishwasher</option>
+                            <option value="Kettle|KITCHEN" <?php selected($appliance, "Kettle|KITCHEN"); ?>>Kettle</option>
+                            <option value="Toaster|KITCHEN" <?php selected($appliance, "Toaster|KITCHEN"); ?>>Toaster</option>
+                            <option value="Fridge|KITCHEN" <?php selected($appliance, "Fridge|KITCHEN"); ?>>Fridge</option>
+                        </optgroup>
+                        <optgroup label="PUMPS">
+                            <option value="Pool Pump|PUMPS" <?php selected($appliance, "Pool Pump|PUMPS"); ?>>Pool Pump</option>
+                            <option value="Sewage System Pump etc|PUMPS" <?php selected($appliance, "Sewage System Pump etc|PUMPS"); ?>>Sewage System Pump etc</option>
+                            <option value="Water Pump|PUMPS" <?php selected($appliance, "Water Pump|PUMPS"); ?>>Water Pump</option>
+                            <option value="Washing Machine (Cold W)|PUMPS" <?php selected($appliance, "Washing Machine (Cold W)|PUMPS"); ?>>Washing Machine (Cold W)</option>
+                            <option value="LED Lights EXTERNAL|PUMPS" <?php selected($appliance, "LED Lights EXTERNAL|PUMPS"); ?>>LED Lights EXTERNAL</option>
+                            <option value="LED Lights|PUMPS" <?php selected($appliance, "LED Lights|PUMPS"); ?>>LED Lights</option>
+                        </optgroup>
+                        <optgroup label="Other">
+                            <option value="Other|Other" <?php selected($appliance, "Other|Other"); ?>>Other</option>
+                        </optgroup>
+                    </select>
+                    <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" value="<?php echo esc_attr($other_appliance); ?>" placeholder="Other Appliance" <?php echo ($appliance === "Other|Other") ? '' : 'disabled'; ?> />
+                    <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" value="<?php echo esc_attr($qty); ?>" placeholder="Qty" min="0" />
+                    <input type="number" name="input_<?php echo $input_id; ?>[watts][]" value="<?php echo esc_attr($watts); ?>" placeholder="Watts" min="0" />
+                    <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_summer][]" value="<?php echo esc_attr($hours_summer); ?>" placeholder="Hours Usage (SUMMER)" min="0" step="0.1" />
+                    <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_winter][]" value="<?php echo esc_attr($hours_winter); ?>" placeholder="Hours Usage (WINTER)" min="0" step="0.1" />
+                    <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_summer][]" class="kwh-day-summer" value="<?php echo esc_attr(number_format($kwh_day_summer, 2)); ?>" placeholder="kWh/day (SUMMER)" readonly />
+                    <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" value="<?php echo esc_attr(number_format($kwh_day_winter, 2)); ?>" placeholder="kWh/day (WINTER)" readonly />
+                    <button type="button" class="remove-repeater-row">−</button>
+                </div>
+        <?php
+            }
+        
+            return ob_get_clean();
+        }
+        
     }
 }
 ?>
