@@ -42,7 +42,7 @@ if ( class_exists( 'GFForms' ) ) {
 
             // Repeater container with add button
             $input = '<div class="gf-repeater">';
-            $input .= '<button type="button" class="add-repeater-row">+</button>';
+            $input .= '<button type="button" class="add-repeater-row">Ad more Appliances</button>';
             $input .= '<div class="repeater-rows">';
 
             // Default row structure
