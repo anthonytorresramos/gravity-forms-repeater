@@ -46,7 +46,7 @@ if ( class_exists( 'GFForms' ) ) {
             $input .= '<div class="repeater-rows">';
 
             // Default row structure
-            $input .= $this->get_repeater_row_html();
+            $input .= $this->get_repeater_row_html($input_id);
 
             $input .= '</div>'; // End of repeater-rows
             $input .= '</div>'; // End of gf-repeater
@@ -61,21 +61,21 @@ if ( class_exists( 'GFForms' ) ) {
         }
 
         // Generate HTML for a repeater row
-        public function get_repeater_row_html() {
+        public function get_repeater_row_html($input_id) {
             ob_start();
             ?>
             <div class="repeater-row">
-                <select name="appliance[]" class="appliance-select">
+                <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
                     <option value="fridge">Fridge</option>
                     <option value="tv">TV</option>
                     <option value="washing_machine">Washing Machine</option>
                     <option value="other">Other</option>
                 </select>
-                <input type="text" name="other_appliance[]" class="other-appliance" placeholder="Other Appliance" style="display:none;" />
-                <input type="number" name="quantity[]" placeholder="Qty" min="1" />
-                <input type="number" name="watts[]" placeholder="Watts" min="0" />
-                <input type="number" name="hours_usage[]" placeholder="Hours Usage" min="0" step="0.1" />
-                <input type="number" name="kwh_day[]" class="kwh-day" placeholder="kWh/day" readonly />
+                <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" placeholder="Other Appliance" style="display:none;" />
+                <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" placeholder="Qty" min="1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[watts][]" placeholder="Watts" min="0" />
+                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage][]" placeholder="Hours Usage" min="0" step="0.1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day][]" class="kwh-day" placeholder="kWh/day" readonly />
                 <button type="button" class="remove-repeater-row">−</button>
             </div>
             <?php
@@ -85,6 +85,7 @@ if ( class_exists( 'GFForms' ) ) {
         // Save entry value as JSON
         public function get_value_save_entry( $value, $form, $input_name, $entry_id, $entry ) {
             if ( is_array( $value ) ) {
+                // Encode the value as JSON
                 return json_encode( $value );
             }
             return $value;
@@ -95,14 +96,24 @@ if ( class_exists( 'GFForms' ) ) {
             $values = json_decode( $value, true );
 
             if ( is_array( $values ) ) {
-                return implode( ', ', $values );
+                $output = [];
+                foreach ($values as $entry) {
+                    $output[] = sprintf(
+                        'Appliance: %s, Qty: %s, Watts: %s, Hours Usage: %s, kWh/day: %s',
+                        esc_html($entry['appliance'] ?? 'N/A'),
+                        esc_html($entry['quantity'] ?? '0'),
+                        esc_html($entry['watts'] ?? '0'),
+                        esc_html($entry['hours_usage'] ?? '0'),
+                        esc_html($entry['kwh_day'] ?? '0')
+                    );
+                }
+                return implode('<br>', $output);
             }
-            return $value;
+            return esc_html( $value );
         }
 
         // Optional: Define custom input attributes if needed
         private function get_input_attributes() {
-            // Here, we can add attributes to the field, like a specific class
             return 'class="ginput_container ginput_container_text"'; // You can customize this
         }
     }

@@ -4,6 +4,7 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     background: #f9f9f9;
+    position: relative;
 }
 
 .repeater-row {
@@ -11,6 +12,7 @@
     flex-wrap: wrap;
     margin-bottom: 10px;
     align-items: center;
+    position: relative;
 }
 
 .repeater-row input, 
@@ -33,6 +35,7 @@
     font-size: 18px;
     line-height: 1;
     padding: 5px 10px;
+    margin-left: 5px; /* Ensure a small gap between buttons */
 }
 
 .remove-repeater-row {
@@ -50,4 +53,9 @@
 
 .total-container span {
     font-weight: bold;
+}
+
+.gf-repeater .add-repeater-row {
+    display: inline-block; /* Ensure button is inline */
+    vertical-align: middle;
 }

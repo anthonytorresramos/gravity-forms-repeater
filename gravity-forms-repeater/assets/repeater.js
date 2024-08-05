@@ -6,7 +6,7 @@ jQuery(document).ready(function ($) {
         var $newRow = $rows.find('.repeater-row').first().clone();
 
         // Reset the fields for the new row
-        $newRow.find('input').val(''); 
+        $newRow.find('input').val('');
         $newRow.find('.other-appliance').hide(); // Hide the other appliance field by default
 
         $rows.append($newRow); // Append the new row
@@ -29,14 +29,14 @@ jQuery(document).ready(function ($) {
     });
 
     // Calculate kWh/day for each row
-    $(document).on('input', 'input[name="quantity[]"], input[name="watts[]"], input[name="hours_usage[]"]', function () {
+    $(document).on('input', 'input[name$="[quantity][]"], input[name$="[watts][]"], input[name$="[hours_usage][]"]', function () {
         var $row = $(this).closest('.repeater-row');
-        var qty = parseFloat($row.find('input[name="quantity[]"]').val()) || 0;
-        var watts = parseFloat($row.find('input[name="watts[]"]').val()) || 0;
-        var hours = parseFloat($row.find('input[name="hours_usage[]"]').val()) || 0;
+        var qty = parseFloat($row.find('input[name$="[quantity][]"]').val()) || 0;
+        var watts = parseFloat($row.find('input[name$="[watts][]"]').val()) || 0;
+        var hours = parseFloat($row.find('input[name$="[hours_usage][]"]').val()) || 0;
 
         var kwhDay = (qty * watts * hours) / 1000;
-        $row.find('.kwh-day').val(kwhDay.toFixed(2));
+        $row.find('input[name$="[kwh_day][]"]').val(kwhDay.toFixed(2));
 
         calculateTotals(); // Recalculate totals whenever inputs change
     });
@@ -48,8 +48,8 @@ jQuery(document).ready(function ($) {
 
         // Iterate over each row and sum up kWh/day and watts
         $('.gf-repeater .repeater-row').each(function () {
-            var kwh = parseFloat($(this).find('.kwh-day').val()) || 0;
-            var watts = parseFloat($(this).find('input[name="watts[]"]').val()) || 0;
+            var kwh = parseFloat($(this).find('input[name$="[kwh_day][]"]').val()) || 0;
+            var watts = parseFloat($(this).find('input[name$="[watts][]"]').val()) || 0;
 
             totalKwh += kwh;
             totalWatts += watts;
