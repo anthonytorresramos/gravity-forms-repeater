@@ -3,7 +3,7 @@
  * Plugin Name: Gravity Forms Custom Repeater Add-On
  * Description: A custom add-on to add repeater functionality to Gravity Forms.
  * Version: 1.0
- * Author: SitesNStores
+ * Author: sns
  */
 
 // Prevent direct access to the file

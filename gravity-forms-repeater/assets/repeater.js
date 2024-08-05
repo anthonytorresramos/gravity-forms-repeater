@@ -7,7 +7,7 @@ jQuery(document).ready(function ($) {
 
         // Reset the fields for the new row
         $newRow.find('input').val('');
-        $newRow.find('.other-appliance').hide(); // Hide the other appliance field by default
+        $newRow.find('.other-appliance').prop('disabled', true); // Disable by default
 
         $rows.append($newRow); // Append the new row
     });
@@ -18,13 +18,13 @@ jQuery(document).ready(function ($) {
         calculateTotals(); // Recalculate totals after removing a row
     });
 
-    // Show the other field if "Other" is selected
+    // Enable or disable the "Other" field based on the dropdown selection
     $(document).on('change', '.appliance-select', function () {
         var $otherField = $(this).closest('.repeater-row').find('.other-appliance');
         if ($(this).val().includes('Other|Other')) {
-            $otherField.show(); // Show the field when "Other" is selected
+            $otherField.prop('disabled', false); // Enable the field when "Other" is selected
         } else {
-            $otherField.hide().val(''); // Hide the field and clear the value when not selected
+            $otherField.prop('disabled', true).val(''); // Disable the field and clear the value when not selected
         }
     });
 

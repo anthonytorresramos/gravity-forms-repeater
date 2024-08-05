@@ -1,9 +1,53 @@
+.gf-repeater {
+    width: 100%; /* Ensure the container takes full width */
+    overflow-x: auto; /* Handle overflow for small screens */
+    margin-bottom: 20px; /* Add margin below the container */
+}
+
+.gf-repeater .repeater-header-row,
 .gf-repeater .repeater-row {
     display: flex;
     align-items: center;
-    gap: 10px; /* Add some gap between the fields for better spacing */
+    gap: 10px; /* Add some gap between columns */
 }
 
-.gf-repeater .other-appliance {
-    visibility: none; /* Completely hide the field when not needed */
+.gf-repeater .header-item,
+.gf-repeater .repeater-row > * {
+    flex: 1; /* Equal width for all columns */
+    text-align: center; /* Center-align text */
+    padding: 5px 10px; /* Add padding for better spacing */
+}
+
+.gf-repeater .repeater-header-row {
+    font-weight: bold; /* Bold text for headers */
+    background-color: #f7f7f7; /* Light background color for header */
+    border-bottom: 2px solid #ccc; /* Add bottom border for separation */
+}
+
+.gf-repeater .repeater-row {
+    margin-bottom: 5px; /* Add margin between rows */
+    border-bottom: 1px solid #eee; /* Light border for row separation */
+}
+
+.gf-repeater .other-appliance:disabled {
+    background-color: #f2f2f2; /* Light gray background for disabled state */
+    color: #888; /* Gray text color for disabled state */
+    cursor: not-allowed; /* Not-allowed cursor for disabled state */
+}
+
+.gf-repeater .add-repeater-row {
+    display: block; /* Make button a block-level element */
+    margin: 10px auto; /* Center the button horizontally with auto margins */
+    padding: 10px 20px; /* Add padding for better spacing */
+    font-size: 14px; /* Adjust font size */
+    background-color: #0073aa; /* WordPress primary color */
+    color: #fff; /* White text */
+    border: none; /* Remove default border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor for clickable effect */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.gf-repeater .add-repeater-row:hover {
+    background-color: #005f8d; /* Darker color on hover */
 }

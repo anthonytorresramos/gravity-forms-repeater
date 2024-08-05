@@ -42,36 +42,60 @@ if (class_exists('GFForms')) {
             $input_id = $this->id;
             $input_name = "input_" . $input_id;
             $input_value = esc_attr($value);
-
+        
             // Use default attributes or define custom ones here
             $field_attributes = $this->get_input_attributes();
-
-            // Repeater container with add button
+        
+            // Repeater container
             $input = '<div class="gf-repeater">';
-            $input .= '<button type="button" class="add-repeater-row">+</button>';
+        
+            // Add static header row
+            $input .= '
+                <div class="repeater-header">
+                    <div class="repeater-header-row">
+                        <div class="header-item">Appliance</div>
+                        <div class="header-item">Other Appliance</div>
+                        <div class="header-item">Qty</div>
+                        <div class="header-item">Watts</div>
+                        <div class="header-item">Hours Usage (SUMMER)</div>
+                        <div class="header-item">Hours Usage (WINTER)</div>
+                        <div class="header-item">kWh/day (SUMMER)</div>
+                        <div class="header-item">kWh/day (WINTER)</div>
+                        <div class="header-item">Remove</div>
+                    </div>
+                </div>';
+        
+            // Repeater rows container
             $input .= '<div class="repeater-rows">';
-
+        
             // Default row structure
             $input .= $this->get_repeater_row_html($input_id);
-
+        
             $input .= '</div>'; // End of repeater-rows
+        
+            // Add repeater button below the rows
+            $input .= '<button type="button" class="add-repeater-row">Add More Appliances</button>';
+        
             $input .= '</div>'; // End of gf-repeater
-
+        
             // Totals container
             $input .= '<div class="total-container">';
             $input .= '<p>Total kWh/day (SUMMER): <span id="total-kwh-day-summer" class="total-kwh-day-summer">0.00</span></p>';
             $input .= '<p>Total kWh/day (WINTER): <span id="total-kwh-day-winter" class="total-kwh-day-winter">0.00</span></p>';
             $input .= '<p>Total Watts: <span id="total-watts" class="total-watts">0</span></p>';
             $input .= '</div>';
-
+        
             return $input;
         }
+        
+        
+        
+        
 
-        // Generate HTML for a repeater row
         public function get_repeater_row_html($input_id)
         {
             ob_start();
-?>
+        ?>
             <div class="repeater-row">
                 <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
                     <optgroup label="HEATING">
@@ -99,7 +123,7 @@ if (class_exists('GFForms')) {
                         <option value="Other|Other">Other</option>
                     </optgroup>
                 </select>
-                <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" placeholder="Other Appliance" style="display:none;" />
+                <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" placeholder="Other Appliance" disabled />
                 <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" placeholder="Qty" min="1" />
                 <input type="number" name="input_<?php echo $input_id; ?>[watts][]" placeholder="Watts" min="0" />
                 <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_summer][]" placeholder="Hours Usage (SUMMER)" min="0" step="0.1" />
@@ -108,9 +132,12 @@ if (class_exists('GFForms')) {
                 <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" placeholder="kWh/day (WINTER)" readonly />
                 <button type="button" class="remove-repeater-row">−</button>
             </div>
-<?php
+        <?php
             return ob_get_clean();
         }
+        
+        
+        
 
         // Save entry value as JSON
         public function get_value_save_entry($value, $form, $input_name, $entry_id, $entry)
