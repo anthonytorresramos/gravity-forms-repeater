@@ -1,61 +1,108 @@
 .gf-repeater {
-    margin: 20px 0;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    background: #f9f9f9;
-    position: relative;
+  width: 100%;
+  overflow-x: auto;
+  margin-bottom: 20px;
 }
 
-.repeater-row {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 10px;
-    align-items: center;
-    position: relative;
+.gf-repeater .repeater-header,
+.gf-repeater .repeater-row {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr); /* 8 equal-width columns plus one for the remove button */
+  gap: 10px; /* Space between items */
+  align-items: center;
+  margin-bottom: 5px;
+  border-bottom: 1px solid #eee;
 }
 
-.repeater-row input, 
-.repeater-row select {
-    margin-right: 10px;
-    padding: 5px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    flex: 1;
-    min-width: 100px;
+.gf-repeater .repeater-header .header-cell,
+.gf-repeater .repeater-row > * {
+  text-align: center;
+  padding: 5px 10px;
 }
 
-.add-repeater-row, 
-.remove-repeater-row {
-    background: #0073aa;
-    color: #fff;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    font-size: 18px;
-    line-height: 1;
-    padding: 5px 10px;
-    margin-left: 5px; /* Ensure a small gap between buttons */
+.gf-repeater .header-cell {
+  font-weight: bold;
+  border-bottom: 2px solid #ddd;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.remove-repeater-row {
-    background: #d32f2f;
+.gf-repeater .repeater-row input[type="number"],
+.gf-repeater .repeater-row input[type="text"],
+.gf-repeater .repeater-row select {
+  width: 100%; /* Full width of the grid cell */
+  padding: 5px;
+  box-sizing: border-box; /* Ensure padding is included in width calculation */
 }
 
-.add-repeater-row:hover, 
-.remove-repeater-row:hover {
-    opacity: 0.8;
+.gf-repeater .remove-repeater-row {
+  background-color: #ff0000; /* Red background for the remove button */
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-.total-container {
-    margin-top: 20px;
-}
-
-.total-container span {
-    font-weight: bold;
+.gf-repeater .remove-repeater-row:hover {
+  background-color: #cc0000; /* Darker red on hover */
 }
 
 .gf-repeater .add-repeater-row {
-    display: inline-block; /* Ensure button is inline */
-    vertical-align: middle;
+  margin: 10px auto;
+  padding: 10px 20px;
+  font-size: 14px;
+  background-color: #0073aa;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  grid-column: span 9; /* Button spans all columns */
+}
+
+.gf-repeater .add-repeater-row:hover {
+  background-color: #005f8d;
+}
+
+.total-container {
+  padding-top: 10px;
+  text-align: center;
+}
+
+/* Tooltip styles */
+.repeater-header .header-cell[title] {
+  position: relative;
+  cursor: help;
+}
+
+.repeater-header .header-cell[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: #fff;
+  padding: 5px;
+  border-radius: 3px;
+  font-size: 12px;
+  white-space: nowrap;
+  z-index: 10;
+}
+
+/* Media Queries for Small Screens */
+@media (max-width: 600px) {
+  .gf-repeater .repeater-header,
+  .gf-repeater .repeater-row {
+    grid-template-columns: 1fr; /* Single column layout */
+    text-align: left;
+  }
+
+  .gf-repeater .add-repeater-row {
+    width: 100%;
+    grid-column: span 1;
+  }
 }
