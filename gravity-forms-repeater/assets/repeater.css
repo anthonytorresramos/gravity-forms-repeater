@@ -4,11 +4,47 @@
   margin-bottom: 20px;
 }
 
+.gf-repeater .repeater-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columns */
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Individual appliance card styling */
+.gf-repeater .appliance-card {
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+/* Hover effect for appliance cards */
+.gf-repeater .appliance-card:hover {
+  background-color: #f0f0f0;
+}
+
+/* Appliance image styling */
+.gf-repeater .appliance-card img {
+  max-width: 50px;
+  margin-bottom: 10px;
+}
+
+/* Appliance label styling */
+.gf-repeater .appliance-card p {
+  margin: 0;
+  font-weight: bold;
+}
+
+/* Header row and repeater row styling */
 .gf-repeater .repeater-header,
 .gf-repeater .repeater-row {
   display: grid;
   grid-template-columns: repeat(9, 1fr); /* 8 equal-width columns plus one for the remove button */
-  gap: 10px; /* Space between items */
+  gap: 10px;
   align-items: center;
   margin-bottom: 5px;
   border-bottom: 1px solid #eee;
@@ -31,23 +67,23 @@
 .gf-repeater .repeater-row input[type="number"],
 .gf-repeater .repeater-row input[type="text"],
 .gf-repeater .repeater-row select {
-  width: 100%; /* Full width of the grid cell */
+  width: 100%;
   padding: 5px;
-  box-sizing: border-box; /* Ensure padding is included in width calculation */
+  box-sizing: border-box;
 }
 
 .gf-repeater .remove-repeater-row {
-  background-color: #ff0000; /* Red background for the remove button */
+  background-color: #ff0000;
   color: white;
   border: none;
   padding: 5px 10px;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
 }
 
 .gf-repeater .remove-repeater-row:hover {
-  background-color: #cc0000; /* Darker red on hover */
+  background-color: #cc0000;
 }
 
 .gf-repeater .add-repeater-row {
@@ -60,7 +96,7 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s;
-  grid-column: span 9; /* Button spans all columns */
+  grid-column: span 9;
 }
 
 .gf-repeater .add-repeater-row:hover {

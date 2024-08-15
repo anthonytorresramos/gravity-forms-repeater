@@ -1,7 +1,18 @@
 jQuery(document).ready(function ($) {
   // Add new repeater row
   $(document).on("click", ".add-repeater-row", function () {
-    var $repeater = $(this).closest(".gf-repeater");
+    addRepeaterRow();
+  });
+
+  // Click event for appliance cards to create a new row with pre-selected appliance
+  $(document).on("click", ".appliance-card", function () {
+    var appliance = $(this).data("appliance");
+    addRepeaterRow(appliance);
+  });
+
+  // Function to add a repeater row
+  function addRepeaterRow(preSelectedAppliance = "") {
+    var $repeater = $(".gf-repeater");
     var $rows = $repeater.find(".repeater-rows");
     var $newRow = $rows.find(".repeater-row").first().clone();
 
@@ -9,8 +20,13 @@ jQuery(document).ready(function ($) {
     $newRow.find("input").val("");
     $newRow.find(".other-appliance").prop("disabled", true); // Disable by default
 
+    // Pre-select the appliance if provided
+    if (preSelectedAppliance) {
+      $newRow.find("select.appliance-select").val(preSelectedAppliance + "|" + findCategory(preSelectedAppliance));
+    }
+
     $rows.append($newRow); // Append the new row
-  });
+  }
 
   // Remove repeater row
   $(document).on("click", ".remove-repeater-row", function () {
@@ -44,6 +60,30 @@ jQuery(document).ready(function ($) {
 
     calculateTotals(); // Recalculate totals whenever inputs change
   });
+
+  // Function to find the category for a given appliance
+  function findCategory(appliance) {
+    var appliances = {
+      "Elec Hot Water (type?)": "HEATING",
+      "Air Conditioning Elec Input": "HEATING",
+      "Bar / Elec Heaters": "HEATING",
+      "Elec Oven": "KITCHEN",
+      "Elect Cook Top": "KITCHEN",
+      Dishwasher: "KITCHEN",
+      Kettle: "KITCHEN",
+      Toaster: "KITCHEN",
+      Fridge: "KITCHEN",
+      "Pool Pump": "PUMPS",
+      "Sewage System Pump etc": "PUMPS",
+      "Water Pump": "PUMPS",
+      "Washing Machine (Cold W)": "PUMPS",
+      "LED Lights EXTERNAL": "PUMPS",
+      "LED Lights": "PUMPS",
+      Other: "Other",
+    };
+
+    return appliances[appliance] || "";
+  }
 
   // Calculate total kWh/day (SUMMER), total kWh/day (WINTER), and total watts
   function calculateTotals() {
