@@ -3,6 +3,7 @@ if (class_exists('GFForms')) {
 
     class GF_Custom_Repeater_Field extends GF_Field
     {
+
         public $type = 'repeater_custom'; // Use a unique type name
 
         // Field title in the form editor
@@ -39,47 +40,64 @@ if (class_exists('GFForms')) {
         public function get_field_input($form, $value = '', $entry = null)
         {
             $input_id = $this->id;
-
+            $input_name = "input_" . $input_id;
+            $input_value = esc_attr($value);
+        
+            // Use default attributes or define custom ones here
+            $field_attributes = $this->get_input_attributes();
+        
             // Repeater container
             $input = '<div class="gf-repeater">';
-
-            // Header row
-            $input .= '<div class="repeater-header">';
-            $input .= '<div class="header-cell" title="Appliance (Dropdown)">Appliances</div>';
-            $input .= '<div class="header-cell" title="Other Appliance (Text Input, conditionally enabled)">Others</div>';
-            $input .= '<div class="header-cell" title="Quantity (Number Input)">Qty</div>';
-            $input .= '<div class="header-cell" title="Watts (Number Input)">Watts</div>';
-            $input .= '<div class="header-cell" title="Hours Usage (SUMMER) (Number Input)">Hours Use (S)</div>';
-            $input .= '<div class="header-cell" title="Hours Usage (WINTER) (Number Input)">Hours Use (W)</div>';
-            $input .= '<div class="header-cell" title="kWh/day (SUMMER) (Read-only Number Input)">kWh/day(S)</div>';
-            $input .= '<div class="header-cell" title="kWh/day (WINTER) (Read-only Number Input)">kWh/day(W)</div>';
-            $input .= '<div class="header-cell"></div>';
-            $input .= '</div>';
-
-            // Repeater rows
+        
+            // Add static header row
+            $input .= '
+                <div class="repeater-header">
+                    <div class="repeater-header-row">
+                        <div class="header-item">Appliance</div>
+                        <div class="header-item">Other Appliance</div>
+                        <div class="header-item">Qty</div>
+                        <div class="header-item">Watts</div>
+                        <div class="header-item">Hours Usage (SUMMER)</div>
+                        <div class="header-item">Hours Usage (WINTER)</div>
+                        <div class="header-item">kWh/day (SUMMER)</div>
+                        <div class="header-item">kWh/day (WINTER)</div>
+                        <div class="header-item">Remove</div>
+                    </div>
+                </div>';
+        
+            // Repeater rows container with prepopulated data
             $input .= '<div class="repeater-rows">';
+        
+            // Add prepopulated rows
             $input .= $this->get_prepopulated_repeater_rows($input_id);
-            $input .= '</div>';
-
-            // Add button
+        
+            $input .= '</div>'; // End of repeater-rows
+        
+            // Add repeater button below the rows
             $input .= '<button type="button" class="add-repeater-row">Add More Appliances</button>';
+        
             $input .= '</div>'; // End of gf-repeater
-
-            // Totals container
+        
+            // Totals container with static IDs
             $input .= '<div class="total-container">';
             $input .= '<p>Total kWh/day (SUMMER): <span id="g_total_summer" class="total-kwh-day-summer">0.00</span></p>';
             $input .= '<p>Total kWh/day (WINTER): <span id="g_total_winter" class="total-kwh-day-winter">0.00</span></p>';
             $input .= '<p>Total Watts: <span id="g_total_watts" class="total-watts">0</span></p>';
             $input .= '</div>';
-
+        
             return $input;
         }
+        
+        
+        
+        
+        
+        
 
-        // Generate HTML for each repeater row
         public function get_repeater_row_html($input_id)
         {
             ob_start();
-            ?>
+        ?>
             <div class="repeater-row">
                 <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
                     <optgroup label="HEATING">
@@ -116,9 +134,12 @@ if (class_exists('GFForms')) {
                 <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" placeholder="kWh/day (WINTER)" readonly />
                 <button type="button" class="remove-repeater-row">−</button>
             </div>
-            <?php
+        <?php
             return ob_get_clean();
         }
+        
+        
+        
 
         // Save entry value as JSON
         public function get_value_save_entry($value, $form, $input_name, $entry_id, $entry)
@@ -241,15 +262,20 @@ if (class_exists('GFForms')) {
                 ["Other|Other", "Ceiling Fans", 2, 30, 2, 0],
                 ["Other|Other", "TV", 1, 50, 2, 2],
                 ["Other|Other", "LED lights", 20, 8, 4, 4],
+
+
+
+    
             ];
-
+        
             ob_start();
-
+        
             foreach ($prepopulated_data as $row) {
                 list($appliance, $other_appliance, $qty, $watts, $hours_summer, $hours_winter) = $row;
                 $kwh_day_summer = ($qty * $watts * $hours_summer) / 1000;
                 $kwh_day_winter = ($qty * $watts * $hours_winter) / 1000;
-                ?>
+        ?>
+        
                 <div class="repeater-row">
                     <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
                         <optgroup label="HEATING">
@@ -286,11 +312,12 @@ if (class_exists('GFForms')) {
                     <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" value="<?php echo esc_attr(number_format($kwh_day_winter, 2)); ?>" placeholder="kWh/day (WINTER)" readonly />
                     <button type="button" class="remove-repeater-row">−</button>
                 </div>
-                <?php
+        <?php
             }
-
+        
             return ob_get_clean();
         }
+        
     }
 }
 ?>
