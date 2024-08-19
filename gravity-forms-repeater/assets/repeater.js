@@ -23,6 +23,10 @@ jQuery(document).ready(function ($) {
     // Pre-select the appliance if provided
     if (preSelectedAppliance) {
       $newRow.find("select.appliance-select").val(preSelectedAppliance + "|" + findCategory(preSelectedAppliance));
+
+      if (preSelectedAppliance === "Other") {
+        $newRow.find(".other-appliance").prop("disabled", false);
+      }
     }
 
     $rows.append($newRow); // Append the new row
