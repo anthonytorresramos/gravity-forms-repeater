@@ -1,4 +1,6 @@
 jQuery(document).ready(function ($) {
+  var appliances = gfRepeaterData.appliances;
+
   // Add new repeater row
   $(document).on("click", ".add-repeater-row", function () {
     addRepeaterRow();
@@ -44,6 +46,9 @@ jQuery(document).ready(function ($) {
     }
 
     $rows.append($newRow); // Append the new row
+
+    // Recalculate grand totals after adding a new row
+    calculateTotals();
   }
 
   // Function to calculate kWh/day (SUMMER) and kWh/day (WINTER) for a specific row
@@ -59,7 +64,8 @@ jQuery(document).ready(function ($) {
     $row.find('input[name$="[kwh_day_summer][]"]').val(kwhDaySummer.toFixed(2));
     $row.find('input[name$="[kwh_day_winter][]"]').val(kwhDayWinter.toFixed(2));
 
-    calculateTotals(); // Recalculate totals whenever a row is updated
+    // Recalculate grand totals every time a row's kWh is calculated
+    calculateTotals();
   }
 
   // Remove repeater row
@@ -105,80 +111,16 @@ jQuery(document).ready(function ($) {
 
   // Function to find the category for a given appliance
   function findCategory(appliance) {
-    var appliances = {
-      "Elec Hot Water (type?)": "HEATING",
-      "Air Conditioning Elec Input": "HEATING",
-      "Bar / Elec Heaters": "HEATING",
-      "Elec Oven": "KITCHEN",
-      "Elect Cook Top": "KITCHEN",
-      Dishwasher: "KITCHEN",
-      Kettle: "KITCHEN",
-      Toaster: "KITCHEN",
-      Fridge: "KITCHEN",
-      "Pool Pump": "PUMPS",
-      "Sewage System Pump etc": "PUMPS",
-      "Water Pump": "PUMPS",
-      "Washing Machine (Cold W)": "PUMPS",
-      "LED Lights EXTERNAL": "PUMPS",
-      "LED Lights": "PUMPS",
-      Other: "Other",
-    };
-
-    return appliances[appliance] || "";
+    for (var category in appliances) {
+      if (appliances[category][appliance]) {
+        return category;
+      }
+    }
+    return "";
   }
 
   // Function to retrieve the default values for a given appliance and category
   function getApplianceDefaults(appliance, category) {
-    // Assuming this function mirrors the structure of your PHP appliances array
-    var appliances = {
-      HEATING: {
-        "Elec Hot Water (type?)": {
-          defaults: {
-            quantity: 1,
-            watts: 1100,
-            hours_summer: 11,
-            hours_winter: 111,
-          },
-        },
-        "Air Conditioning Elec Input": {
-          defaults: {
-            quantity: 2,
-            watts: 2222,
-            hours_summer: 22,
-            hours_winter: 222,
-          },
-        },
-      },
-      KITCHEN: {
-        "Elec Oven": {
-          defaults: {
-            quantity: 3,
-            watts: 3300,
-            hours_summer: 33,
-            hours_winter: 3333,
-          },
-        },
-        "Elect Cook Top": {
-          defaults: {
-            quantity: 4,
-            watts: 4,
-            hours_summer: 4,
-            hours_winter: 4,
-          },
-        },
-      },
-      Other: {
-        Other: {
-          defaults: {
-            quantity: 5,
-            watts: 500,
-            hours_summer: 55,
-            hours_winter: 3555,
-          },
-        },
-      },
-    };
-
     if (appliances[category] && appliances[category][appliance]) {
       return appliances[category][appliance].defaults;
     }
@@ -221,6 +163,30 @@ jQuery(document).ready(function ($) {
     $('input[name="' + totalWattsFieldId + '"]').val(totalWatts);
   }
 
+  // Initial setup to populate the first row
+  function initializeFirstRow() {
+    var $firstRow = $(".gf-repeater .repeater-row").first();
+    var $firstSelect = $firstRow.find("select.appliance-select");
+    var selectedAppliance = $firstSelect.val();
+    if (selectedAppliance) {
+      var applianceParts = selectedAppliance.split("|");
+      var appliance = applianceParts[0];
+      var category = applianceParts[1];
+      var defaults = getApplianceDefaults(appliance, category);
+
+      if (defaults) {
+        $firstRow.find('input[name$="[quantity][]"]').val(defaults.quantity);
+        $firstRow.find('input[name$="[watts][]"]').val(defaults.watts);
+        $firstRow.find('input[name$="[hours_usage_summer][]"]').val(defaults.hours_summer);
+        $firstRow.find('input[name$="[hours_usage_winter][]"]').val(defaults.hours_winter);
+
+        // Manually trigger calculation for kWh/day
+        calculateRowKwh($firstRow);
+      }
+    }
+  }
+
   // Initial call to set values on page load
+  initializeFirstRow();
   calculateTotals();
 });

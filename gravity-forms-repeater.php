@@ -86,12 +86,16 @@ function register_custom_repeater_field()
 
 // Enqueue scripts and styles
 add_action('wp_enqueue_scripts', 'enqueue_custom_repeater_scripts');
-function enqueue_custom_repeater_scripts()
-{
+function enqueue_custom_repeater_scripts() {
     wp_enqueue_script('gf-custom-repeater', plugin_dir_url(__FILE__) . 'gravity-forms-repeater/assets/repeater.js', array('jquery'), '1.0', true);
+
+    // Pass appliances data to JavaScript
+    wp_localize_script('gf-custom-repeater', 'gfRepeaterData', [
+        'appliances' => gf_custom_repeater_get_appliances(),
+    ]);
+    
     wp_enqueue_style('gf-custom-repeater', plugin_dir_url(__FILE__) . 'gravity-forms-repeater/assets/repeater.css', array(), '1.0');
 }
-
 // Handle custom repeater submission
 add_action('gform_pre_submission', 'handle_custom_repeater_submission');
 function handle_custom_repeater_submission($form)

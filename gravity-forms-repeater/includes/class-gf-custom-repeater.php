@@ -36,61 +36,62 @@ if (class_exists('GFForms')) {
         }
 
         // Display field input in form
-        public function get_field_input($form, $value = '', $entry = null)
-        {
-            $input_id = $this->id;
+public function get_field_input($form, $value = '', $entry = null)
+{
+    $input_id = $this->id;
 
-            // Get the global appliances array
-            $appliances = gf_custom_repeater_get_appliances();
+    // Get the global appliances array
+    $appliances = gf_custom_repeater_get_appliances();
 
-            // Repeater container
-            $input = '<div class="gf-repeater">';
+    // Repeater container
+    $input = '<div class="gf-repeater">';
 
-            // Appliances category cards
-            $input .= '<div class="repeater-categories">';
-            foreach ($appliances as $category => $items) {
-                $input .= '<div class="repeater-category">';
-                $input .= '<h4>' . esc_html($category) . '</h4>';
-                foreach ($items as $appliance => $details) {
-                    $input .= '<div class="appliance-card" data-appliance="' . esc_attr($appliance) . '">';
-                    $input .= '<p>' . esc_html($details['label']) . '</p>';
-                    $input .= '</div>';
-                }
-                $input .= '</div>';
-            }
+    // Appliances category cards
+    $input .= '<div class="repeater-categories">';
+    foreach ($appliances as $category => $items) {
+        $input .= '<div class="repeater-category">';
+        $input .= '<h4>' . esc_html($category) . '</h4>';
+        foreach ($items as $appliance => $details) {
+            $input .= '<div class="appliance-card" data-appliance="' . esc_attr($appliance) . '">';
+            $input .= '<p>' . esc_html($details['label']) . '</p>';
             $input .= '</div>';
-
-            // Header row
-            $input .= '<div class="repeater-header">';
-            $input .= '<div class="header-cell" title="Appliance">Appliances</div>';
-            $input .= '<div class="header-cell" title="Other Appliance">Others</div>';
-            $input .= '<div class="header-cell" title="Quantity">Qty</div>';
-            $input .= '<div class="header-cell" title="Watts">Watts</div>';
-            $input .= '<div class="header-cell" title="Hours Usage (SUMMER)">Hours Use (S)</div>';
-            $input .= '<div class="header-cell" title="Hours Usage (WINTER)">Hours Use (W)</div>';
-            $input .= '<div class="header-cell" title="kWh/day (SUMMER)">kWh/day(S)</div>';
-            $input .= '<div class="header-cell" title="kWh/day (WINTER)">kWh/day(W)</div>';
-            $input .= '<div class="header-cell"></div>';
-            $input .= '</div>';
-
-            // Repeater rows
-            $input .= '<div class="repeater-rows">';
-            $input .= $this->get_prepopulated_repeater_rows($input_id);
-            $input .= '</div>';
-
-            // Add button
-            $input .= '<button type="button" class="add-repeater-row">Add More Appliances</button>';
-            $input .= '</div>'; // End of gf-repeater
-
-            // Totals container
-            $input .= '<div class="total-container">';
-            $input .= '<p>Total kWh/day (SUMMER): <span id="g_total_summer" class="total-kwh-day-summer">0.00</span></p>';
-            $input .= '<p>Total kWh/day (WINTER): <span id="g_total_winter" class="total-kwh-day-winter">0.00</span></p>';
-            $input .= '<p>Total Watts: <span id="g_total_watts" class="total-watts">0</span></p>';
-            $input .= '</div>';
-
-            return $input;
         }
+        $input .= '</div>';
+    }
+    $input .= '</div>';
+
+    // Header row
+    $input .= '<div class="repeater-header">';
+    $input .= '<div class="header-cell" title="Appliance">Appliances</div>';
+    $input .= '<div class="header-cell" title="Other Appliance">Others</div>';
+    $input .= '<div class="header-cell" title="Quantity">Qty</div>';
+    $input .= '<div class="header-cell" title="Watts">Watts</div>';
+    $input .= '<div class="header-cell" title="Hours Usage (SUMMER)">Hours Use (S)</div>';
+    $input .= '<div class="header-cell" title="Hours Usage (WINTER)">Hours Use (W)</div>';
+    $input .= '<div class="header-cell" title="kWh/day (SUMMER)">kWh/day(S)</div>';
+    $input .= '<div class="header-cell" title="kWh/day (WINTER)">kWh/day(W)</div>';
+    $input .= '<div class="header-cell"></div>';
+    $input .= '</div>';
+
+    // Repeater rows (initial empty row)
+    $input .= '<div class="repeater-rows">';
+    $input .= $this->get_repeater_row_html($input_id);
+    $input .= '</div>';
+
+    // Add button
+    $input .= '<button type="button" class="add-repeater-row">Add More Appliances</button>';
+    $input .= '</div>'; // End of gf-repeater
+
+    // Totals container
+    $input .= '<div class="total-container">';
+    $input .= '<p>Total kWh/day (SUMMER): <span id="g_total_summer" class="total-kwh-day-summer">0.00</span></p>';
+    $input .= '<p>Total kWh/day (WINTER): <span id="g_total_winter" class="total-kwh-day-winter">0.00</span></p>';
+    $input .= '<p>Total Watts: <span id="g_total_watts" class="total-watts">0</span></p>';
+    $input .= '</div>';
+
+    return $input;
+}
+
 
         // Generate HTML for each repeater row
         public function get_repeater_row_html($input_id)
@@ -222,46 +223,52 @@ if (class_exists('GFForms')) {
             return 'class="ginput_container ginput_container_text"'; // You can customize this
         }
 
-        private function get_prepopulated_repeater_rows($input_id)
-        {
-            $prepopulated_data = [
-                ["Elec Hot Water (type?)|HEATING", "", 1, 3500, 3, 3],
-                ["Air Conditioning Elec Input|HEATING", "", 1, 2500, 2, 2],
-            ];
+private function get_prepopulated_repeater_rows($input_id)
+{
+    // Fetch appliances array with defaults
+    $appliances = gf_custom_repeater_get_appliances();
+    
+    ob_start();
 
-            ob_start();
+    foreach ($appliances as $category => $items) {
+        foreach ($items as $appliance_name => $details) {
+            // Extract default values
+            $qty = $details['defaults']['quantity'];
+            $watts = $details['defaults']['watts'];
+            $hours_summer = $details['defaults']['hours_summer'];
+            $hours_winter = $details['defaults']['hours_winter'];
+            $kwh_day_summer = ($qty * $watts * $hours_summer) / 1000;
+            $kwh_day_winter = ($qty * $watts * $hours_winter) / 1000;
 
-            foreach ($prepopulated_data as $row) {
-                list($appliance, $other_appliance, $qty, $watts, $hours_summer, $hours_winter) = $row;
-                $kwh_day_summer = ($qty * $watts * $hours_summer) / 1000;
-                $kwh_day_winter = ($qty * $watts * $hours_winter) / 1000;
-                ?>
-                <div class="repeater-row">
-                    <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
-                        <?php foreach (gf_custom_repeater_get_appliances() as $category => $items) : ?>
-                            <optgroup label="<?php echo esc_attr($category); ?>">
-                                <?php foreach ($items as $appliance_name => $details) : ?>
-                                    <option value="<?php echo esc_attr($appliance_name . '|' . $category); ?>" <?php selected($appliance, $appliance_name . '|' . $category); ?>>
-                                        <?php echo esc_html($appliance_name); ?>
-                                    </option>
-                                <?php endforeach; ?>
-                            </optgroup>
-                        <?php endforeach; ?>
-                    </select>
-                    <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" value="<?php echo esc_attr($other_appliance); ?>" placeholder="Other Appliance" <?php echo ($appliance === "Other|Other") ? '' : 'disabled'; ?> />
-                    <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" value="<?php echo esc_attr($qty); ?>" placeholder="Qty" min="0" />
-                    <input type="number" name="input_<?php echo $input_id; ?>[watts][]" value="<?php echo esc_attr($watts); ?>" placeholder="Watts" min="0" />
-                    <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_summer][]" value="<?php echo esc_attr($hours_summer); ?>" placeholder="Hours Usage (SUMMER)" min="0" step="0.1" />
-                    <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_winter][]" value="<?php echo esc_attr($hours_winter); ?>" placeholder="Hours Usage (WINTER)" min="0" step="0.1" />
-                    <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_summer][]" class="kwh-day-summer" value="<?php echo esc_attr(number_format($kwh_day_summer, 2)); ?>" placeholder="kWh/day (SUMMER)" readonly />
-                    <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" value="<?php echo esc_attr(number_format($kwh_day_winter, 2)); ?>" placeholder="kWh/day (WINTER)" readonly />
-                    <button type="button" class="remove-repeater-row">−</button>
-                </div>
-                <?php
-            }
-
-            return ob_get_clean();
+            ?>
+            <div class="repeater-row">
+                <select name="input_<?php echo $input_id; ?>[appliance][]" class="appliance-select">
+                    <?php foreach ($appliances as $category_key => $category_items) : ?>
+                        <optgroup label="<?php echo esc_attr($category_key); ?>">
+                            <?php foreach ($category_items as $name => $item_details) : ?>
+                                <option value="<?php echo esc_attr($name . '|' . $category_key); ?>" <?php selected($appliance_name, $name . '|' . $category_key); ?>>
+                                    <?php echo esc_html($name); ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </optgroup>
+                    <?php endforeach; ?>
+                </select>
+                <input type="text" name="input_<?php echo $input_id; ?>[other_appliance][]" class="other-appliance" value="" placeholder="Other Appliance" <?php echo ($appliance_name === "Other") ? '' : 'disabled'; ?> />
+                <input type="number" name="input_<?php echo $input_id; ?>[quantity][]" value="<?php echo esc_attr($qty); ?>" placeholder="Qty" min="0" />
+                <input type="number" name="input_<?php echo $input_id; ?>[watts][]" value="<?php echo esc_attr($watts); ?>" placeholder="Watts" min="0" />
+                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_summer][]" value="<?php echo esc_attr($hours_summer); ?>" placeholder="Hours Usage (SUMMER)" min="0" step="0.1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[hours_usage_winter][]" value="<?php echo esc_attr($hours_winter); ?>" placeholder="Hours Usage (WINTER)" min="0" step="0.1" />
+                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_summer][]" class="kwh-day-summer" value="<?php echo esc_attr(number_format($kwh_day_summer, 2)); ?>" placeholder="kWh/day (SUMMER)" readonly />
+                <input type="number" name="input_<?php echo $input_id; ?>[kwh_day_winter][]" class="kwh-day-winter" value="<?php echo esc_attr(number_format($kwh_day_winter, 2)); ?>" placeholder="kWh/day (WINTER)" readonly />
+                <button type="button" class="remove-repeater-row">−</button>
+            </div>
+            <?php
         }
+    }
+
+    return ob_get_clean();
+}
+
     }
 }
 ?>
