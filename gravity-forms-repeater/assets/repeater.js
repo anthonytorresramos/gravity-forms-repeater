@@ -22,7 +22,8 @@ jQuery(document).ready(function ($) {
 
     // Pre-select the appliance if provided
     if (preSelectedAppliance) {
-      $newRow.find("select.appliance-select").val(preSelectedAppliance + "|" + findCategory(preSelectedAppliance));
+      var category = findCategory(preSelectedAppliance);
+      $newRow.find("select.appliance-select").val(preSelectedAppliance + "|" + category);
 
       if (preSelectedAppliance === "Other") {
         $newRow.find(".other-appliance").prop("disabled", false);

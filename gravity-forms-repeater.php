@@ -11,6 +11,71 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+// Global appliances array
+function gf_custom_repeater_get_appliances() {
+    return [
+        "HEATING" => [
+            "Elec Hot Water (type?)" => [
+                "label" => "Heating Appliance",
+                "image" => "/image-path-here",
+                "defaults" => [
+                "quantity" => 1,
+                "watts" => 1100,
+                "hours_summer" => 11,
+                "hours_winter" => 111,
+            ],
+            ],
+            "Air Conditioning Elec Input" => [
+                "label" => "Air Conditioning",
+                "image" => "/image-path-here",
+                "defaults" => [
+                "quantity" => 2,
+                "watts" => 2222,
+                "hours_summer" => 22,
+                "hours_winter" => 222,
+            ],
+            ],
+            // Add more appliances as needed...
+        ],
+        "KITCHEN" => [
+            "Elec Oven" => [
+                "label" => "Electric Oven",
+                "image" => "/image-path-here",
+                "defaults" => [
+                "quantity" => 3,
+                "watts" => 3300,
+                "hours_summer" => 33,
+                "hours_winter" => 3333,
+            ],
+            ],
+            "Elect Cook Top" => [
+                "label" => "Electric Cook Top",
+                "image" => "/image-path-here",
+                "defaults" => [
+                "quantity" => 4,
+                "watts" => 4,
+                "hours_summer" => 4,
+                "hours_winter" => 4,
+            ],
+            ],
+            // Add more appliances as needed...
+        ],
+        "Other" => [
+            "Other" => [
+                "label" => "Other Appliance",
+                "image" => "/image-path-here",
+                "defaults" => [
+                "quantity" => 5,
+                "watts" => 500,
+                "hours_summer" => 55,
+                "hours_winter" => 3555,
+            ],
+            ],
+        ]
+        // Add other categories as needed...
+    ];
+}
+
 // Register the custom repeater field
 add_action('gform_loaded', 'register_custom_repeater_field', 10, 2);
 function register_custom_repeater_field()
