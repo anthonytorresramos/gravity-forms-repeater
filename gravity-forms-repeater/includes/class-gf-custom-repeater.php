@@ -125,7 +125,7 @@ public function get_field_input($form, $value = '', $entry = null)
         $input .= '<h4>' . esc_html($category) . '</h4>';
         foreach ($items as $appliance => $details) {
             $input .= '<div class="appliance-card" data-appliance="' . esc_attr($appliance) . '">';
-            $input .= '<img src="' . esc_url($details['image']) . '" alt="' . esc_attr($details['label']) . '">';
+            // $input .= '<img src="' . esc_url($details['image']) . '" alt="' . esc_attr($details['label']) . '">'; // temporary hide image for now
             $input .= '<p>' . esc_html($details['label']) . '</p>';
             $input .= '</div>';
         }
