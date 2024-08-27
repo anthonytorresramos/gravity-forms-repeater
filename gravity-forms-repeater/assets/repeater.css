@@ -142,3 +142,50 @@
     grid-column: span 1;
   }
 }
+
+/* // GRAVITY FORM CSS TOOLTIP */
+
+.gf-tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.gf-tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px; /* Smaller width for the tooltip */
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 3px 6px; /* Smaller padding */
+  border-radius: 4px;
+  font-size: 12px; /* Smaller font size */
+
+  /* Position the tooltip text */
+  position: absolute;
+  z-index: 1;
+  bottom: 125%; /* Position the tooltip above the field */
+  left: 50%;
+  margin-left: -60px; /* Center the tooltip */
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.gf-tooltip .tooltip-text::after {
+  content: "";
+  position: absolute;
+  top: 100%; /* At the bottom of the tooltip */
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #333 transparent transparent transparent;
+}
+
+.gf-tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+.gf-tooltip .gfield_description {
+  display: none; /* Hide the description text */
+}

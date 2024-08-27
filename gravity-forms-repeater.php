@@ -19,62 +19,235 @@ function gf_custom_repeater_get_appliances() {
                 "label" => "Heating Appliance",
                 "image" => "/image-path-here",
                 "defaults" => [
-                "quantity" => 1,
-                "watts" => 1100,
-                "hours_summer" => 11,
-                "hours_winter" => 111,
+                    "quantity" => 1,
+                    "watts" => 3500,
+                    "hours_summer" => 3,
+                    "hours_winter" => 3,
+                ],
             ],
-            ],
-            "Air Conditioning Elec Input" => [
+            "Air Conditioning E load" => [
                 "label" => "Air Conditioning",
                 "image" => "/image-path-here",
                 "defaults" => [
-                "quantity" => 2,
-                "watts" => 2222,
-                "hours_summer" => 22,
-                "hours_winter" => 222,
+                    "quantity" => 1,
+                    "watts" => 2500,
+                    "hours_summer" => 2,
+                    "hours_winter" => 2,
+                ],
             ],
+            "Bar or elec heaters" => [
+                "label" => "Bar or Electric Heaters",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 1000,
+                    "hours_summer" => 0,
+                    "hours_winter" => 2,
+                ],
             ],
-            // Add more appliances as needed...
+            "Elect cook top" => [
+                "label" => "Electric Cook Top",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 1000,
+                    "hours_summer" => 0.5,
+                    "hours_winter" => 0.5,
+                ],
+            ],
         ],
         "KITCHEN" => [
             "Elec Oven" => [
                 "label" => "Electric Oven",
                 "image" => "/image-path-here",
                 "defaults" => [
-                "quantity" => 3,
-                "watts" => 3300,
-                "hours_summer" => 33,
-                "hours_winter" => 3333,
+                    "quantity" => 1,
+                    "watts" => 1500,
+                    "hours_summer" => 0.5,
+                    "hours_winter" => 0.5,
+                ],
             ],
-            ],
-            "Elect Cook Top" => [
+            "Elect cook top" => [
                 "label" => "Electric Cook Top",
                 "image" => "/image-path-here",
                 "defaults" => [
-                "quantity" => 4,
-                "watts" => 4,
-                "hours_summer" => 4,
-                "hours_winter" => 4,
+                    "quantity" => 1,
+                    "watts" => 1000,
+                    "hours_summer" => 0.5,
+                    "hours_winter" => 0.5,
+                ],
             ],
+            "Dishwasher" => [
+                "label" => "Dishwasher",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 2000,
+                    "hours_summer" => 1,
+                    "hours_winter" => 1,
+                ],
             ],
-            // Add more appliances as needed...
+            "Kettle" => [
+                "label" => "Kettle",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 2000,
+                    "hours_summer" => 0.2,
+                    "hours_winter" => 0.2,
+                ],
+            ],
+            "Toaster" => [
+                "label" => "Toaster",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 1500,
+                    "hours_summer" => 0.1,
+                    "hours_winter" => 0.1,
+                ],
+            ],
+      
+            "Fridge Freezer" => [
+                "label" => "Fridge Freezer",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 175,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
+            "Chest Freezer" => [
+                "label" => "Chest Freezer",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 150,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
+            "Air Fryer" => [
+                "label" => "Air Fryer",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 1500,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
+        ],
+        "PUMPS" => [
+            "Pool pump" => [
+                "label" => "Pool Pump",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 500,
+                    "hours_summer" => 5,
+                    "hours_winter" => 2,
+                ],
+            ],
+            "Sewage sytem pump etc" => [
+                "label" => "Sewage System Pump",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 400,
+                    "hours_summer" => 12,
+                    "hours_winter" => 12,
+                ],
+            ],
+            "Water pump" => [
+                "label" => "Water Pump",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 1000,
+                    "hours_summer" => 1,
+                    "hours_winter" => 1,
+                ],
+            ],
+            "Washing machine (cold w)" => [
+                "label" => "Washing Machine (Cold Water)",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 500,
+                    "hours_summer" => 1,
+                    "hours_winter" => 1,
+                ],
+            ],
+        ],
+        "LIGHTING/ENTERTAINMENT" => [
+            "LED FLOOD LIGHT" => [
+                "label" => "LED Flood Light",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 50,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
+            "LED lights" => [
+                "label" => "LED Lights",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 20,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
+            "Ceiling Fans" => [
+                "label" => "Ceiling Fans",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 30,
+                    "hours_summer" => 2,
+                    "hours_winter" => 0,
+                ],
+            ],
+            "TV" => [
+                "label" => "Television",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 1,
+                    "watts" => 50,
+                    "hours_summer" => 2,
+                    "hours_winter" => 2,
+                ],
+            ],
+            "LED lights (multiple)" => [
+                "label" => "LED Lights (Multiple)",
+                "image" => "/image-path-here",
+                "defaults" => [
+                    "quantity" => 20,
+                    "watts" => 8,
+                    "hours_summer" => 4,
+                    "hours_winter" => 4,
+                ],
+            ],
         ],
         "Other" => [
             "Other" => [
                 "label" => "Other Appliance",
                 "image" => "/image-path-here",
                 "defaults" => [
-                "quantity" => 5,
-                "watts" => 500,
-                "hours_summer" => 55,
-                "hours_winter" => 3555,
+                    "quantity" => 5,
+                    "watts" => 500,
+                    "hours_summer" => 55,
+                    "hours_winter" => 3555,
+                ],
             ],
-            ],
-        ]
-        // Add other categories as needed...
+        ],
     ];
 }
+
 
 // Register the custom repeater field
 add_action('gform_loaded', 'register_custom_repeater_field', 10, 2);
@@ -154,4 +327,21 @@ function handle_custom_repeater_submission($form)
         }
     }
 }
+
+// Add a custom tooltip text field in the General section below the description box
+function add_tooltip_js_to_gravity_form() {
+    ?>
+    <script type="text/javascript">
+    jQuery(document).ready(function($) {
+        $('.gf-tooltip').each(function() {
+            var tooltipText = $(this).find('.gfield_description').text();
+            $(this).append('<span class="tooltip-text">' + tooltipText + '</span>');
+        });
+    });
+    </script>
+    <?php
+}
+add_action('wp_footer', 'add_tooltip_js_to_gravity_form');
+
+
 ?>

@@ -125,45 +125,46 @@ public function get_field_input($form, $value = '', $entry = null)
         }
 
         // Save entry value as JSON
-        public function get_value_save_entry($value, $form, $input_name, $entry_id, $entry)
-        {
-            if (is_array($value)) {
-                $processed_values = [];
-                foreach ($value['appliance'] as $key => $appliance) {
-                    list($appliance_name, $category) = explode('|', $appliance);
+// Save entry value as JSON
+public function get_value_save_entry($value, $form, $input_name, $entry_id, $entry) {
+    if (is_array($value)) {
+        $processed_values = [];
+        foreach ($value['appliance'] as $key => $appliance) {
+            list($appliance_name, $category) = explode('|', $appliance);
 
-                    // Capture other appliance name if selected
-                    $other_appliance = sanitize_text_field($value['other_appliance'][$key] ?? '');
-                    if ($appliance_name === 'Other' && !empty($other_appliance)) {
-                        $appliance_name = 'Other'; // Keep the appliance as "Other"
-                        $other_column = $other_appliance; // Store the custom appliance name in a separate column
-                    } else {
-                        $other_column = '-'; // Use a dash for non-custom entries
-                    }
-
-                    $processed_values[] = [
-                        'appliance' => $appliance_name,
-                        'other_appliance' => $other_column,
-                        'quantity' => floatval($value['quantity'][$key] ?? 0),
-                        'watts' => floatval($value['watts'][$key] ?? 0),
-                        'hours_usage_summer' => floatval($value['hours_usage_summer'][$key] ?? 0),
-                        'hours_usage_winter' => floatval($value['hours_usage_winter'][$key] ?? 0),
-                        'kwh_day_summer' => floatval($value['kwh_day_summer'][$key] ?? 0),
-                        'kwh_day_winter' => floatval($value['kwh_day_winter'][$key] ?? 0),
-                    ];
-                }
-
-                // Include totals in the processed data
-                $processed_values['totals'] = [
-                    'total_kwh_day_summer' => array_sum(array_column($processed_values, 'kwh_day_summer')),
-                    'total_kwh_day_winter' => array_sum(array_column($processed_values, 'kwh_day_winter')),
-                    'total_watts' => array_sum(array_column($processed_values, 'watts')),
-                ];
-
-                return json_encode($processed_values);
+            // Capture other appliance name if selected
+            $other_appliance = sanitize_text_field($value['other_appliance'][$key] ?? '');
+            if ($appliance_name === 'Other' && !empty($other_appliance)) {
+                $appliance_name = 'Other'; // Keep the appliance as "Other"
+                $other_column = $other_appliance; // Store the custom appliance name in a separate column
+            } else {
+                $other_column = '-'; // Use a dash for non-custom entries
             }
-            return $value;
+
+            $processed_values[] = [
+                'appliance' => $appliance_name,
+                'other_appliance' => $other_column,
+                'quantity' => floatval($value['quantity'][$key] ?? 0),
+                'watts' => floatval($value['watts'][$key] ?? 0),
+                'hours_usage_summer' => floatval($value['hours_usage_summer'][$key] ?? 0),
+                'hours_usage_winter' => floatval($value['hours_usage_winter'][$key] ?? 0),
+                'kwh_day_summer' => floatval($value['kwh_day_summer'][$key] ?? 0),
+                'kwh_day_winter' => floatval($value['kwh_day_winter'][$key] ?? 0),
+            ];
         }
+
+        // Include totals in the processed data
+        $processed_values['totals'] = [
+            'total_kwh_day_summer' => array_sum(array_column($processed_values, 'kwh_day_summer')),
+            'total_kwh_day_winter' => array_sum(array_column($processed_values, 'kwh_day_winter')),
+            'total_watts' => array_sum(array_column($processed_values, 'watts')),
+        ];
+
+        return json_encode($processed_values);
+    }
+    return $value;
+}
+
 
         // Display entry value in table format
         public function get_value_entry_detail($value, $currency = '', $use_text = false, $format = 'html', $media = 'screen')

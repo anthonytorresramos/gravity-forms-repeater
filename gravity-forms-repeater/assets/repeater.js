@@ -47,8 +47,24 @@ jQuery(document).ready(function ($) {
 
     $rows.append($newRow); // Append the new row
 
-    // Recalculate grand totals after adding a new row
-    calculateTotals();
+    reindexRepeaterRows(); // Reindex after adding a new row
+    calculateTotals(); // Recalculate grand totals after adding a new row
+  }
+
+  // Function to reindex the rows
+  function reindexRepeaterRows() {
+    $(".gf-repeater .repeater-row").each(function (index) {
+      $(this)
+        .find("input, select")
+        .each(function () {
+          var name = $(this).attr("name");
+          if (name) {
+            // Update the name attribute to have the correct index
+            name = name.replace(/\[\d+\]/, "[" + index + "]");
+            $(this).attr("name", name);
+          }
+        });
+    });
   }
 
   // Function to calculate kWh/day (SUMMER) and kWh/day (WINTER) for a specific row
@@ -71,6 +87,7 @@ jQuery(document).ready(function ($) {
   // Remove repeater row
   $(document).on("click", ".remove-repeater-row", function () {
     $(this).closest(".repeater-row").remove();
+    reindexRepeaterRows(); // Reindex after removing a row
     calculateTotals(); // Recalculate totals after removing a row
   });
 
@@ -189,4 +206,23 @@ jQuery(document).ready(function ($) {
   // Initial call to set values on page load
   initializeFirstRow();
   calculateTotals();
+});
+
+//gravity form custom html SKIPP
+
+jQuery(document).ready(function ($) {
+  // Check the current page of the form
+  var currentPage = parseInt($('input[name="gform_current_page_1"]').val()); // Replace '1' with your form ID
+
+  // If on the first page, hide the skip button
+  if (currentPage === 1) {
+    $("#skipStep").hide(); // Hide the original skip button
+  }
+
+  // Existing skip button functionality
+  $("#skipStep").on("click", function (e) {
+    e.preventDefault();
+    // Find the next button on the current page and trigger a click to go to the next page
+    $(".gform_page .gform_next_button").trigger("click");
+  });
 });
