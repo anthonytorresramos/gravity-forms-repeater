@@ -170,9 +170,9 @@ jQuery(document).ready(function ($) {
     $("#g_total_watts").text(totalWatts);
 
     // Update Gravity Forms fields with the calculated totals
-    var totalSummerFieldId = "input_31"; // Replace with the actual field ID for Total kWh/day (SUMMER)
-    var totalWinterFieldId = "input_32"; // Replace with the actual field ID for Total kWh/day (WINTER)
-    var totalWattsFieldId = "input_33"; // Replace with the actual field ID for Total Watts
+    var totalSummerFieldId = "input_4"; // Replace with the actual field ID for Total kWh/day (SUMMER)
+    var totalWinterFieldId = "input_5"; // Replace with the actual field ID for Total kWh/day (WINTER)
+    var totalWattsFieldId = "input_3"; // Replace with the actual field ID for Total Watts
 
     // Set the values of the Gravity Forms fields
     $('input[name="' + totalSummerFieldId + '"]').val(totalKwhSummer.toFixed(2));
